@@ -7,7 +7,7 @@ import { addTodo } from '../slices/todoSlices';
 import { v4 as uuid } from 'uuid';
 import toast from 'react-hot-toast';
 
-function TodoModel({ modalOpen, setModalOpen }) {
+function TodoModel({ type, modalOpen, setModalOpen }) {
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState('incomplete');
 
@@ -15,17 +15,25 @@ function TodoModel({ modalOpen, setModalOpen }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (title === '') {
+      toast.error('Please enter a title');
+      return;
+    }
     if (title && status) {
-      dispatch(
-        addTodo({
-          id: uuid(),
-          title: title,
-          status,
-          time: new Date().toLocaleDateString(),
-        })
-      );
-      toast.success('Task Added Successfully');
-      setModalOpen(false);
+      if (type === 'add') {
+        dispatch(
+          addTodo({
+            id: uuid(),
+            title: title,
+            status,
+            time: new Date().toLocaleDateString(),
+          })
+        );
+        toast.success('Task Added Successfully');
+        setModalOpen(false);
+      } if(type === 'update') {
+        console.log('updating task');
+      }
     } else {
       toast.error("Title shouldn't be emply");
     }
@@ -46,7 +54,9 @@ function TodoModel({ modalOpen, setModalOpen }) {
               <MdOutlineClose />
             </div>
             <form className={styles.form} onSubmit={handleSubmit}>
-              <h1 className={styles.formTitle}>Add Task</h1>
+              <h1 className={styles.formTitle}>
+                {type === 'update' ? 'Update' : 'Add'} Task
+              </h1>
               <label htmlFor='title'>
                 Title
                 <input
@@ -70,7 +80,7 @@ function TodoModel({ modalOpen, setModalOpen }) {
               </label>
               <div className={styles.buttonContainer}>
                 <Button type='submit' variant='primary'>
-                  Add Task
+                  {type === 'update' ? 'Update' : 'Add'} Task
                 </Button>
                 <Button
                   type='button'

@@ -16,7 +16,7 @@ function AppHeader(props) {
         <option value='incomplete'>Incomplete</option>
         <option value='complete'>complete</option>
       </SelectButton>
-      <TodoModel modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <TodoModel type='add' modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </div>
   );
 }
