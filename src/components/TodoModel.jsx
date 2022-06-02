@@ -5,6 +5,7 @@ import Button from './Button';
 import { useDispatch } from 'react-redux';
 import { addTodo } from '../slices/todoSlices';
 import { v4 as uuid } from 'uuid';
+import toast from 'react-hot-toast';
 
 function TodoModel({ modalOpen, setModalOpen }) {
   const [title, setTitle] = useState('');
@@ -23,6 +24,10 @@ function TodoModel({ modalOpen, setModalOpen }) {
           time: new Date().toLocaleDateString(),
         })
       );
+      toast.success('Task Added Successfully');
+      setModalOpen(false);
+    } else {
+      toast.error("Title shouldn't be emply");
     }
   };
 
