@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 function TodoModel({ modalOpen, setModalOpen }) {
   const [title, setTitle] = useState('');
-  const [status, setStatus] = useState('incomplite');
+  const [status, setStatus] = useState('incomplete');
 
   const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ function TodoModel({ modalOpen, setModalOpen }) {
       dispatch(
         addTodo({
           id: uuid(),
-          titile: title,
+          title: title,
           status,
           time: new Date().toLocaleDateString(),
         })
@@ -64,8 +64,8 @@ function TodoModel({ modalOpen, setModalOpen }) {
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                 >
-                  <option value='incomplite'>Incomplite</option>
-                  <option value='complite'>Complite</option>
+                  <option value='incomplete'>Incomplete</option>
+                  <option value='complete'>complete</option>
                 </select>
               </label>
               <div className={styles.buttonContainer}>

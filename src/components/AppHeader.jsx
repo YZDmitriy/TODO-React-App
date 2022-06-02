@@ -13,8 +13,8 @@ function AppHeader(props) {
       </Button>
       <SelectButton id='status'>
         <option value='all'>All</option>
-        <option value='incomplite'>Incomplite</option>
-        <option value='complite'>Complite</option>
+        <option value='incomplete'>Incomplete</option>
+        <option value='complete'>complete</option>
       </SelectButton>
       <TodoModel modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </div>
