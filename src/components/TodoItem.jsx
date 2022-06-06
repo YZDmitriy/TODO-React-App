@@ -63,6 +63,7 @@ function TodoItem({ todo }) {
       </div>
       <TodoModel
         type='update'
+        todo={todo}
         modalOpen={updateModalOpen}
         setModalOpen={setUpdateModalOpen}
       />
