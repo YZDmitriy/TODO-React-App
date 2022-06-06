@@ -1,13 +1,22 @@
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
+import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { MdDelete, MdEdit } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
 import styles from '../styles/modules/todoItem.module.scss';
 import { getClasses } from '../utils/getClasses';
-import { deleteTodo, updateTodo } from '../slices/todoSlices';
-import toast from 'react-hot-toast';
-import TodoModel from './TodoModel';
 import CheckButton from './CheckButton';
+import TodoModel from './TodoModel';
+import { deleteTodo, updateTodo } from '../slices/todoSlices';
+
+const child = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
 
 function TodoItem({ todo }) {
   const dispatch = useDispatch();
@@ -22,29 +31,28 @@ function TodoItem({ todo }) {
     }
   }, [todo.status]);
 
+  const handleCheck = () => {
+    setChecked(!checked);
+    dispatch(
+      updateTodo({ ...todo, status: checked ? 'incomplete' : 'complete' })
+    );
+  };
+
   const handleDelete = () => {
     dispatch(deleteTodo(todo.id));
-    toast.success('Todo Deleted Seccessfully');
+    toast.success('Todo Deleted Successfully');
   };
 
   const handleUpdate = () => {
     setUpdateModalOpen(true);
   };
 
-  const handleCheck = () => {
-    setChecked(!checked)
-    dispatch(updateTodo({
-      ...todo,
-      status: checked ? 'incomplete' : 'complete'
-    }))
-  }
-
   return (
     <>
-      <div className={styles.item}>
+      <motion.div className={styles.item} variants={child}>
         <div className={styles.todoDetails}>
           <CheckButton checked={checked} handleCheck={handleCheck} />
-          <div className={styles.text}>
+          <div className={styles.texts}>
             <p
               className={getClasses([
                 styles.todoText,
@@ -61,8 +69,8 @@ function TodoItem({ todo }) {
         <div className={styles.todoActions}>
           <div
             className={styles.icon}
-            onClick={handleDelete}
-            onKeyDown={handleDelete}
+            onClick={() => handleDelete()}
+            onKeyDown={() => handleDelete()}
             tabIndex={0}
             role='button'
           >
@@ -70,20 +78,20 @@ function TodoItem({ todo }) {
           </div>
           <div
             className={styles.icon}
-            onClick={handleUpdate}
-            onKeyDown={handleUpdate}
+            onClick={() => handleUpdate()}
+            onKeyDown={() => handleUpdate()}
             tabIndex={0}
             role='button'
           >
             <MdEdit />
           </div>
         </div>
-      </div>
+      </motion.div>
       <TodoModel
         type='update'
-        todo={todo}
         modalOpen={updateModalOpen}
         setModalOpen={setUpdateModalOpen}
+        todo={todo}
       />
     </>
   );
