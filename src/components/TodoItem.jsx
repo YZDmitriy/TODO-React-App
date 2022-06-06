@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import styles from '../styles/modules/todoItem.module.scss';
 import { getClasses } from '../utils/getClasses';
-import { deleteTodo } from '../slices/todoSlices';
+import { deleteTodo, updateTodo } from '../slices/todoSlices';
 import toast from 'react-hot-toast';
 import TodoModel from './TodoModel';
 import CheckButton from './CheckButton';
@@ -15,7 +15,7 @@ function TodoItem({ todo }) {
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
   useEffect(() => {
-    if (todo.status === 'complite') {
+    if (todo.status === 'complete') {
       setChecked(true);
     } else {
       setChecked(false);
@@ -31,11 +31,19 @@ function TodoItem({ todo }) {
     setUpdateModalOpen(true);
   };
 
+  const handleCheck = () => {
+    setChecked(!checked)
+    dispatch(updateTodo({
+      ...todo,
+      status: checked ? 'incomplete' : 'complete'
+    }))
+  }
+
   return (
     <>
       <div className={styles.item}>
         <div className={styles.todoDetails}>
-          <CheckButton checked={checked} setChecked={setChecked} />
+          <CheckButton checked={checked} handleCheck={handleCheck} />
           <div className={styles.text}>
             <p
               className={getClasses([
