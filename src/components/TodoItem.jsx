@@ -1,5 +1,5 @@
 import { format } from 'date-fns/esm';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import styles from '../styles/modules/todoItem.module.scss';
@@ -7,10 +7,20 @@ import { getClasses } from '../utils/getClasses';
 import { deleteTodo } from '../slices/todoSlices';
 import toast from 'react-hot-toast';
 import TodoModel from './TodoModel';
+import CheckButton from './CheckButton';
 
 function TodoItem({ todo }) {
   const dispatch = useDispatch();
+  const [checked, setChecked] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (todo.status === 'complite') {
+      setChecked(true);
+    } else {
+      setChecked(false);
+    }
+  }, [todo.status]);
 
   const handleDelete = () => {
     dispatch(deleteTodo(todo.id));
@@ -25,7 +35,7 @@ function TodoItem({ todo }) {
     <>
       <div className={styles.item}>
         <div className={styles.todoDetails}>
-          []
+          <CheckButton checked={checked} setChecked={setChecked} />
           <div className={styles.text}>
             <p
               className={getClasses([
